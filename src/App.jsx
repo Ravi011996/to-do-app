@@ -6,14 +6,17 @@ import SignupForm from './components/sign-up-form/sign-up-form.component';
 import TaskTable from  './components/to-do-table/to-do-table.component';
 import TaskChart from './components/to-do-pi-chart/to-do-pi-chart.component';
 import TaskCalendar from './components/to-do-calander/react-calendar.component'
+import Home from './routes/to-do-dashboard'
 
 function App() {
   return (
     <>
-      <Navigation />
       <BrowserRouter>
+      <Navigation />
         <Routes>
           <Route path="/" element={<SignInForm />}></Route>
+          <Route path="/login" element={<SignInForm />}></Route>
+          <Route path="/dashboard" element={<Home />}></Route>
           <Route path="/add" element={<TaskForm />}></Route>
           <Route path="/signup" element={<SignupForm />}></Route>
           <Route path="/table" element={<TaskTable />}></Route>

@@ -10,10 +10,8 @@ import {
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
-// Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-// Sample Task Data
 const tasks = [
   {
     id: 1,
@@ -108,10 +106,10 @@ const TaskChart = () => {
 
   return (
     <Box sx={{ mt: 5, textAlign: "center" }}>
-      <Typography variant="h4" gutterBottom>
+      {/* <Typography variant="h4" gutterBottom>
         Task Overview
-      </Typography>
-      <FormControl sx={{ mb: 3, minWidth: 200 }}>
+      </Typography> */}
+      {/* <FormControl sx={{ mb: 3, minWidth: 200 }}>
         <InputLabel>Month</InputLabel>
         <Select
           value={selectedMonth}
@@ -130,10 +128,10 @@ const TaskChart = () => {
           <MenuItem value={11}>November</MenuItem>
           <MenuItem value={12}>December</MenuItem>
         </Select>
-      </FormControl>
+      </FormControl> */}
 
       {filteredTasks.length > 0 ? (
-        <Pie data={chartData} />
+        <Pie data={chartData}   width={260} height={260}/>
       ) : (
         <Typography variant="h6" color="textSecondary">
           No tasks available for the selected month.

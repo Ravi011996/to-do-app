@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   Box,
@@ -9,12 +9,59 @@ import {
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LockIcon from "@mui/icons-material/Lock";
+import { useNavigate } from "react-router-dom";
+import { signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils'
 
 const SignInForm = () => {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  // State for form inputs and errors
+  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [errors, setErrors] = useState({ username: "", password: "" });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: "" });
+  };
+
+  const validate = () => {
+    let valid = true;
+    let newErrors = { username: "", password: "" };
+
+    if (!formData.username) {
+      newErrors.username = "Username is required.";
+      valid = false;
+    } else if (!/\S+@\S+\.\S+/.test(formData.username)) {
+      newErrors.username = "Please enter a valid email address.";
+      valid = false;
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Password is required.";
+      valid = false;
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters long.";
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
+
+  const handleSubmit = async(event) => {
     event.preventDefault();
-    // Handle login logic here
-    console.log("Login submitted");
+    if (validate()) {
+      try {
+        const {username,password } = formData;
+        await signInAuthUserWithEmailAndPassword(username, password);
+        navigate("/dashboard");
+      } catch (error) {
+        alert('user sign in failed')
+        console.log('user sign in failed', error);
+      }
+      
+    }
   };
 
   return (
@@ -31,21 +78,22 @@ const SignInForm = () => {
           bgcolor: "background.paper",
         }}
       >
-        {/* Login Header */}
         <Typography variant="h4" gutterBottom>
           Login
         </Typography>
-
-        {/* Form */}
         <Box
           component="form"
           onSubmit={handleSubmit}
           sx={{ mt: 2, width: "100%" }}
         >
-          {/* Username Field */}
           <TextField
             fullWidth
             label="Username"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            error={!!errors.username}
+            helperText={errors.username}
             variant="outlined"
             margin="normal"
             InputProps={{
@@ -61,7 +109,12 @@ const SignInForm = () => {
           <TextField
             fullWidth
             label="Password"
+            name="password"
             type="password"
+            value={formData.password}
+            onChange={handleChange}
+            error={!!errors.password}
+            helperText={errors.password}
             variant="outlined"
             margin="normal"
             InputProps={{

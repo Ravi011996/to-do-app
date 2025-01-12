@@ -13,14 +13,20 @@ import {
     ListItemText
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useNavigate } from "react-router-dom";
 
 const Navigation = () => {
+    const navigate = useNavigate();
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     // Toggle Drawer
     const toggleDrawer = (open) => () => {
         setIsDrawerOpen(open);
     };
+
+    const goto = (route)=>{
+        navigate(route);
+    }   
 
     return (
         <div>
@@ -34,10 +40,8 @@ const Navigation = () => {
 
                     {/* Buttons for larger screens */}
                     <Box sx={{ display: { xs: "none", md: "block" } }}>
-                        <Button color="inherit">Home</Button>
-                        <Button color="inherit">About</Button>
-                        <Button color="inherit">Services</Button>
-                        <Button color="inherit">Contact</Button>
+                        <Button color="inherit" onClick={()=>{goto('/signup')}}>Sign Up</Button>
+                        <Button color="inherit" onClick={()=>{goto('/login')}}>Sign In</Button>
                     </Box>
 
                     {/* Hamburger Menu Icon for smaller screens */}

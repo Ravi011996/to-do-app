@@ -9,18 +9,21 @@ import {
   Avatar,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import {createAuthUserWithEmailAndPassword,createUserDocumentFromAuth} from '../../utils/firebase/firebase.utils'
+import { useNavigate } from "react-router-dom";
 
-const SignupForm = () => {
-  const [formData, setFormData] = useState({
+
+const emptyForm = {
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
-  });
-
+  }
+const SignupForm = () => {
+  const navigate = useNavigate(); // Initialize useNavigate
+  const [formData, setFormData] = useState(emptyForm);
   const [errors, setErrors] = useState({});
 
-  // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -29,7 +32,6 @@ const SignupForm = () => {
     });
   };
 
-  // Validate form fields
   const validate = () => {
     const newErrors = {};
     if (!formData.name) newErrors.name = "Name is required";
@@ -46,12 +48,25 @@ const SignupForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     if (validate()) {
-      alert("Form submitted successfully!");
-      console.log("Form Data:", formData);
+        const {email,password, name} = formData
+        try {
+            const { user } = await createAuthUserWithEmailAndPassword(
+              email,
+              password
+            );
+      
+            await createUserDocumentFromAuth(user, { name });
+            navigate("/login");
+          } catch (error) {
+            if (error.code === 'auth/email-already-in-use') {
+              alert('Cannot create user, email already in use');
+            } else {
+              console.log('user creation encountered an error', error);
+            }
+          }
     }
   };
 

@@ -1,0 +1,10 @@
+.auth-button-link {
+    text-decoration: none;
+}
+
+.auth-button {
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+}

@@ -1,0 +1,17 @@
+/* TaskForm.css */
+.container {
+    margin-top: 40px;
+  }
+  
+  .formBox {
+    margin-top: 24px;
+    padding: 24px;
+    box-shadow: 3px 3px 3px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: #fff;
+  }
+  
+  .submitButton {
+    margin-top: 24px;
+  }
+  

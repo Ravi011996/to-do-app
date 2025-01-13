@@ -1,0 +1,23 @@
+/* Home.css */
+.home-container {
+    margin-top: 16px;
+  }
+  
+  .home-paper {
+    padding: 5px;
+    width: 100%;
+    margin-bottom: 32px;
+  }
+  
+  .home-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .home-box .MuiBox-root {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  

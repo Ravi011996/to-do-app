@@ -1,21 +1,16 @@
 import React, { useState } from "react";
-import {
-  Container,
-  TextField,
-  Button,
-  Typography,
-  Box,
-} from "@mui/material";
+import { Container, Button, Box } from "@mui/material";
+import InputField from "./to-do-input.component";
+import "./to-do-form.styles.css";
 
 const TaskForm = () => {
-  // State to store form inputs
   const [taskDetails, setTaskDetails] = useState({
     taskName: "",
     description: "",
     dueDate: "",
+    priority: "",
   });
 
-  // Handle input changes
   const handleChange = (event) => {
     const { name, value } = event.target;
     setTaskDetails((prevDetails) => ({
@@ -24,78 +19,53 @@ const TaskForm = () => {
     }));
   };
 
-  // Handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log("Task Details Submitted:", taskDetails);
-    // Add further submission logic here
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 5 }}>
-      {/* Form Header */}
-      <Typography variant="h4" gutterBottom>
-        Task Details
-      </Typography>
-
-      {/* Task Form */}
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{
-          mt: 3,
-          p: 3,
-          boxShadow: 3,
-          borderRadius: 2,
-          bgcolor: "background.paper",
-        }}
-      >
-        {/* Task Name Field */}
-        <TextField
-          fullWidth
+    <Container maxWidth="sm" className="container">
+      <Box component="form" onSubmit={handleSubmit} className="formBox">
+        <InputField
           label="Task Name"
           name="taskName"
+          type="text"
           value={taskDetails.taskName}
           onChange={handleChange}
-          margin="normal"
-          variant="outlined"
         />
 
-        {/* Description Field */}
-        <TextField
-          fullWidth
+        <InputField
           label="Description"
           name="description"
+          type="text"
           value={taskDetails.description}
           onChange={handleChange}
-          margin="normal"
-          variant="outlined"
-          multiline
-          rows={4}
         />
 
-        {/* Due Date Field */}
-        <TextField
-          fullWidth
+        <InputField
           label="Due Date"
           name="dueDate"
           type="date"
           value={taskDetails.dueDate}
           onChange={handleChange}
-          margin="normal"
-          variant="outlined"
-          InputLabelProps={{
-            shrink: true,
-          }}
         />
 
-        {/* Submit Button */}
+        <InputField
+          label="Priority"
+          name="priority"
+          value={taskDetails.priority}
+          onChange={handleChange}
+          isSelect={true}
+          options={["High", "Medium", "Low"]}
+        />
+
         <Button
           type="submit"
           variant="contained"
           color="primary"
           fullWidth
-          sx={{ mt: 3 }}
+          className="submitButton"
         >
           Submit Task
         </Button>

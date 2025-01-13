@@ -1,23 +1,18 @@
-import React, { useState } from "react";
-import {
-  Container,
-  Box,
-  TextField,
-  Button,
-  Typography,
-  InputAdornment,
-} from "@mui/material";
+import React, { useState, useContext } from "react";
+import { Container, Box, Typography, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { signInAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
+import { UserContext } from "../../contexts/user.context";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LockIcon from "@mui/icons-material/Lock";
-import { useNavigate } from "react-router-dom";
-import { signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils'
+import InputField from "./sign-in-input.component";
+import './sign-in-form.styles.css';
 
 const SignInForm = () => {
-  const navigate = useNavigate(); // Initialize useNavigate
-
-  // State for form inputs and errors
+  const { setCurrentUser } = useContext(UserContext);
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [errors, setErrors] = useState({ username: "", password: "" });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,90 +44,58 @@ const SignInForm = () => {
     return valid;
   };
 
-  const handleSubmit = async(event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (validate()) {
       try {
-        const {username,password } = formData;
-        await signInAuthUserWithEmailAndPassword(username, password);
+        const { username, password } = formData;
+        const { user } = await signInAuthUserWithEmailAndPassword(
+          username,
+          password
+        );
+        setCurrentUser(user);
         navigate("/dashboard");
       } catch (error) {
-        alert('user sign in failed')
-        console.log('user sign in failed', error);
+        alert("User sign-in failed");
+        console.error("User sign-in failed", error);
       }
-      
     }
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 8 }}>
-      {/* Login Box */}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          boxShadow: 3,
-          p: 4,
-          borderRadius: 2,
-          bgcolor: "background.paper",
-        }}
-      >
-        <Typography variant="h4" gutterBottom>
+    <Container className="container" maxWidth="sm">
+      <Box className="box">
+        <Typography className="typography" variant="h4" gutterBottom>
           Login
         </Typography>
         <Box
           component="form"
           onSubmit={handleSubmit}
-          sx={{ mt: 2, width: "100%" }}
+          className="form"
         >
-          <TextField
-            fullWidth
+          <InputField
             label="Username"
             name="username"
+            type="text"
             value={formData.username}
             onChange={handleChange}
-            error={!!errors.username}
-            helperText={errors.username}
-            variant="outlined"
-            margin="normal"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <AccountCircleIcon />
-                </InputAdornment>
-              ),
-            }}
+            error={errors.username}
+            startIcon={<AccountCircleIcon />}
           />
-
-          {/* Password Field */}
-          <TextField
-            fullWidth
+          <InputField
             label="Password"
             name="password"
             type="password"
             value={formData.password}
             onChange={handleChange}
-            error={!!errors.password}
-            helperText={errors.password}
-            variant="outlined"
-            margin="normal"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <LockIcon />
-                </InputAdornment>
-              ),
-            }}
+            error={errors.password}
+            startIcon={<LockIcon />}
           />
-
-          {/* Login Button */}
           <Button
             type="submit"
             variant="contained"
             color="primary"
-            fullWidth
-            sx={{ mt: 3 }}
+            className="button"
           >
             Login
           </Button>

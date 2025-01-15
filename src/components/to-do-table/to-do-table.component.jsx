@@ -2,13 +2,19 @@ import React from "react";
 import { Box, Table, TableContainer, Paper, TableBody } from "@mui/material";
 import TaskRow from "./table-row.comonent";
 import TaskTableHead from "./task-table-head.component";
+import { useTasks } from "../../contexts/task/task-context";
 import "./to-do-table.styles.css";
 
 const TaskTable = ({ initialTasks }) => {
-  const tasks =  initialTasks
+  const tasks =  initialTasks;
+  const {  dispatch } = useTasks();
 
   const handleDeleteTask = (id) => {
-    // need to handle delete items
+
+    dispatch({
+      type: "DELETE_TASK",
+      payload: id,
+    });
   };
 
 
@@ -29,15 +35,6 @@ const TaskTable = ({ initialTasks }) => {
           </TableBody>
         </Table>
       </TableContainer>
-
-      {/* {editTask && (
-        <EditTaskDialog
-          open={editDialogOpen}
-          task={editTask}
-          onSave={handleEditSave}
-          onClose={() => setEditDialogOpen(false)}
-        />
-      )} */}
     </Box>
   );
 };

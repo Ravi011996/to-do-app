@@ -3,13 +3,8 @@ import { Container, Button, Box } from "@mui/material";
 import InputField from "./to-do-input.component";
 import "./to-do-form.styles.css";
 
-const TaskForm = () => {
-  const [taskDetails, setTaskDetails] = useState({
-    taskName: "",
-    description: "",
-    dueDate: "",
-    priority: "",
-  });
+const TaskForm = ({ initialValues, onSubmit, formTitle }) => {
+  const [taskDetails, setTaskDetails] = useState(initialValues);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -21,12 +16,14 @@ const TaskForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Task Details Submitted:", taskDetails);
+    onSubmit(taskDetails);
   };
 
   return (
     <Container maxWidth="sm" className="container">
       <Box component="form" onSubmit={handleSubmit} className="formBox">
+        <h2>{formTitle}</h2>
+
         <InputField
           label="Task Name"
           name="taskName"
@@ -60,6 +57,16 @@ const TaskForm = () => {
           options={["High", "Medium", "Low"]}
         />
 
+        {/* Add Status Field */}
+        <InputField
+          label="Status"
+          name="status"
+          value={taskDetails.status}
+          onChange={handleChange}
+          isSelect={true}
+          options={["Completed", "In Progress", "Cancelled"]}
+        />
+
         <Button
           type="submit"
           variant="contained"
@@ -67,7 +74,7 @@ const TaskForm = () => {
           fullWidth
           className="submitButton"
         >
-          Submit Task
+          {formTitle}
         </Button>
       </Box>
     </Container>

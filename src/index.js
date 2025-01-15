@@ -4,12 +4,15 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { UserProvider } from "./contexts/user.context";
+import { TaskProvider } from "./contexts/task/task-provider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <UserProvider>
-      <App />
+      <TaskProvider>
+        <App />
+      </TaskProvider>
     </UserProvider>
   </React.StrictMode>
 );

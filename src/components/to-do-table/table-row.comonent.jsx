@@ -5,7 +5,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
 import { renderStatusChip, renderPriorityChip } from '../../utils/task/task.utils';
 
-const TaskRow = ({ task, onEdit, onDelete }) => {
+const TaskRow = ({ task, onDelete }) => {
   return (
     <TableRow>
       <TableCell>{task.taskName}</TableCell>
@@ -17,7 +17,7 @@ const TaskRow = ({ task, onEdit, onDelete }) => {
       <TableCell>
         <Tooltip title="Edit Task">
           <IconButton color="primary">
-          <Link to={`/add/${task.id}`} className="auth-button-link">
+          <Link to={`/edit/${task.id}`} className="auth-button-link">
             <EditIcon />
           </Link>
           </IconButton>
